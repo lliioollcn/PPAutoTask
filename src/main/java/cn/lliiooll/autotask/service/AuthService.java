@@ -86,7 +86,7 @@ public class AuthService {
      * @return
      */
     public boolean vaptcha(String token, String server, String ipAddr) {
-        return vaptchaService.verify(token,server,ipAddr);
+        return vaptchaService.verify(token, server, ipAddr);
     }
 
     public LoginRespBean login(AuthBean bean, String ipAddr) {
