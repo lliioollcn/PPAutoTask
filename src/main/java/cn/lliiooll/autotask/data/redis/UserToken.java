@@ -1,5 +1,6 @@
 package cn.lliiooll.autotask.data.redis;
 
+import cn.hutool.json.JSONUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +16,9 @@ public class UserToken {
     private String mid;// 用户mid
     private String type;// 用户访问类型,浏览器为web,安卓软件为android
     private long time;// 登录时间,用于超时自动退出登录
+
+    @Override
+    public String toString() {
+        return JSONUtil.toJsonStr(this);
+    }
 }

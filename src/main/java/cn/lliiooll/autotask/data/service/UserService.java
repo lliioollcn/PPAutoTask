@@ -11,7 +11,17 @@ public interface UserService {
     List<UserTask> selectAllUserTask();
 
     UserTask selectUserTaskByMid(String mid);
+
+    /**
+     * @param mid
+     * @return 用户是否存在
+     */
     boolean checkUserByMid(String mid);
+
+    /**
+     * @param email
+     * @return 用户是否存在
+     */
     boolean checkUserByEmail(String email);
 
     UserData selectUserDataByMid(String mid);

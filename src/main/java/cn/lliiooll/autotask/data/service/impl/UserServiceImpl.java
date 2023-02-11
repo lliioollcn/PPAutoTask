@@ -45,9 +45,14 @@ public class UserServiceImpl implements UserService {
         return selectUserDataByMid(mid) != null;
     }
 
+    /**
+     *
+     * @param email
+     * @return 用户是否存在
+     */
     @Override
     public boolean checkUserByEmail(String email) {
-        return selectUserDataByEmail(email) == null;
+        return selectUserDataByEmail(email) != null;
     }
 
     @Override
