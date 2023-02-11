@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lliiooll.autotask.data.mapper.UserMapper">
+
+    <select id="selectAllTask" resultMap="cn.lliiooll.autotask.data.pojo.SysTask">
+        select u.*
+        from sys_task u
+    </select>
+
+    <select id="selectTaskByTaskType" parameterType="Integer" resultMap="cn.lliiooll.autotask.data.pojo.SysTask">
+        select u.*
+        from sys_task u
+        where u.taskType = = #{taskType}
+    </select>
+
+    <insert id="insertTask" parameterType="cn.lliiooll.autotask.data.pojo.SysTask" useGeneratedKeys="true"
+            keyProperty="taskType">
+        insert into sys_task(taskName)
+        values (#{taskName})
+    </insert>
+
+
+    <update id="updateTask" parameterType="cn.lliiooll.autotask.data.pojo.SysTask">
+        update sys_task
+        <set>
+            <if test="taskName != null and taskName != ''">taskName = #{taskName}</if>
+        </set>
+        where taskType = #{taskType}
+    </update>
+
+
+    <delete id="deleteTask" parameterType="Integer">
+        delete
+        from sys_task
+        where taskType = #{taskType}
+    </delete>
+
+</mapper> 

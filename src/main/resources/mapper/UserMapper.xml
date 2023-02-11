@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lliiooll.autotask.data.mapper.UserMapper">
+
+    <select id="selectAllUserData" resultMap="cn.lliiooll.autotask.data.pojo.UserData">
+        select u.*
+        from user_data u
+    </select>
+
+    <select id="selectAllUserTask" resultMap="cn.lliiooll.autotask.data.pojo.UserTask">
+        select u.*
+        from user_task u
+    </select>
+
+    <select id="selectUserTaskByMid" parameterType="String" resultMap="cn.lliiooll.autotask.data.pojo.UserTask">
+        select u.*
+        from user_task u
+        where u.mid = = #{mid}
+    </select>
+    <select id="selectUserTaskByTaskType" parameterType="Integer" resultMap="cn.lliiooll.autotask.data.pojo.UserTask">
+        select u.*
+        from user_task u
+        where u.taskType = = #{taskType}
+    </select>
+
+    <select id="selectUserDataByMid" parameterType="String" resultMap="cn.lliiooll.autotask.data.pojo.UserData">
+        select u.*
+        from user_data u
+        where u.mid = = #{mid}
+    </select>
+
+    <select id="selectUserDataByEmail" parameterType="String" resultMap="cn.lliiooll.autotask.data.pojo.UserData">
+        select u.*
+        from user_data u
+        where u.email = = #{email}
+    </select>
+
+    <insert id="insertUserData" parameterType="cn.lliiooll.autotask.data.pojo.UserData" useGeneratedKeys="true"
+            keyProperty="mid">
+        insert into user_data(mid,
+                              userName,
+                              email,
+                              passWord,
+                              emailAuthed,
+                              isAdmin,
+                              isBanned,
+                              reason,
+                              createTime)
+        values (#{mid},
+                #{deptId},
+                #{email},
+                #{passWord},
+                #{emailAuthed},
+                #{isAdmin},
+                #{isBanned},
+                #{reason},
+                sysdate())
+    </insert>
+
+    <insert id="insertUserTask" parameterType="cn.lliiooll.autotask.data.pojo.UserTask" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into user_task(mid,
+                              taskType,
+                              taskStatus,
+                              lastTime,
+                              cookie,
+                              createTime)
+        values (#{mid},
+                #{taskType},
+                #{taskStatus},
+                #{lastTime},
+                #{cookie},
+                sysdate())
+    </insert>
+
+    <update id="updateUserData" parameterType="cn.lliiooll.autotask.data.pojo.UserData">
+        update user_data
+        <set>
+            <if test="userName != null and userName != ''">userName = #{userName},</if>
+            <if test="email != null and email != ''">email = #{email},</if>
+            <if test="passWord != null and passWord != ''">passWord = #{passWord},</if>
+            <if test="reason != null and reason != ''">reason = #{reason},</if>
+            <if test="emailAuthed != null">emailAuthed = #{emailAuthed},</if>
+            <if test="isAdmin != null">isAdmin = #{isAdmin},</if>
+            <if test="isBanned != null">isBanned = #{isBanned},</if>
+            createTime = sysdate()
+        </set>
+        where mid = #{mid}
+    </update>
+
+    <update id="updateUserTask" parameterType="cn.lliiooll.autotask.data.pojo.UserTask">
+        update user_task
+        <set>
+            <if test="mid != null and mid != ''">mid = #{mid},</if>
+            <if test="cookie != null and cookie != ''">mid = #{cookie},</if>
+            <if test="taskType != null ">taskType = #{taskType},</if>
+            <if test="taskStatus != null ">taskStatus = #{taskStatus},</if>
+            lastTime = sysdate()
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <delete id="deleteUserDataByMid" parameterType="String">
+        delete
+        from user_data
+        where mid = #{mid}
+    </delete>
+    <delete id="deleteUserTaskById" parameterType="Integer">
+        delete
+        from user_task
+        where id = #{id}
+    </delete>
+
+</mapper> 
