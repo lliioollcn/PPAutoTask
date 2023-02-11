@@ -28,8 +28,8 @@ CREATE TABLE IF NOT EXISTS `user_data` (
   `email` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '用户邮箱',
   `emailAuthed` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户邮箱是否验证',
   `isAdmin` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户是否为管理员',
-  `passWord` varchar(512) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0' COMMENT '用户密码',
-  `isBanned` int(1) NOT NULL DEFAULT '0' COMMENT '用户是否被封禁',
+  `passWord` varchar(256) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0' COMMENT '用户密码',
+  `isBanned` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户是否被封禁',
   `reason` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '用户封禁原因',
   PRIMARY KEY (`mid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户数据表';
