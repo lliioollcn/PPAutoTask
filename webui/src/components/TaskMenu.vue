@@ -1,6 +1,6 @@
 <template>
   <el-menu
-      default-active="/"
+      :default-active="pathNow"
       class="el-menu-vertical"
       :collapse="isCollapse"
       menu-trigger="hover"
@@ -91,10 +91,11 @@ const collapseMenu = () => {
 
 const route = useRoute()
 
+const pathNow = ref("/")
+
 
 watch(() => route.path, () => {
-
-
+  pathNow.value = route.path
 })
 
 

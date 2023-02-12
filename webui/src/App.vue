@@ -1,15 +1,21 @@
 <script setup lang="ts">
-import {RouterLink, RouterView} from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
 import TaskMenu from "@/components/TaskMenu.vue";
 import Header from "@/components/Header.vue";
+import {ElLoading} from "element-plus";
+
+const loading = ElLoading.service({
+  lock: true,
+  text: "加载中",
+  background: 'rgba(0, 0, 0, 0.7)'
+})
+loading.close()
 </script>
 
 <template>
   <div class="content">
     <el-container>
       <el-header class="header">
-        <Header @onHeaderRoute="onHeaderRoute"/>
+        <Header/>
       </el-header>
       <el-container>
         <el-aside class="aside">
