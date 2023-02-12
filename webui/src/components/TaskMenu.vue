@@ -3,6 +3,7 @@
       :default-active="pathNow"
       class="el-menu-vertical"
       :collapse="isCollapse"
+      :collapse-transition="true"
       menu-trigger="hover"
       @open="handleOpen"
       @close="handleClose"
@@ -11,47 +12,39 @@
   >
     <el-menu-item index="/">
       <el-icon>
-        <icon-menu/>
+        <el-icon>
+          <House/>
+        </el-icon>
       </el-icon>
       <template #title>主页</template>
     </el-menu-item>
-    <el-sub-menu>
+    <el-sub-menu disabled>
       <template #title>
         <el-icon>
           <location/>
         </el-icon>
-        <span>Navigator One</span>
+        <span>测试</span>
       </template>
       <el-menu-item-group>
-        <template #title><span>Group One</span></template>
-        <el-menu-item index="/about">item one</el-menu-item>
-        <el-menu-item index="1-2">item two</el-menu-item>
+        <template #title>这里面什么都没有哦</template>
       </el-menu-item-group>
-      <el-menu-item-group title="Group Two">
-        <el-menu-item index="1-3">item three</el-menu-item>
-      </el-menu-item-group>
-      <el-sub-menu index="1-4">
-        <template #title><span>item four</span></template>
-        <el-menu-item index="1-4-1">item one</el-menu-item>
-      </el-sub-menu>
     </el-sub-menu>
-    <el-menu-item index="2">
+
+    <el-menu-item index="/task/create">
       <el-icon>
-        <icon-menu/>
+        <el-icon>
+          <CirclePlus/>
+        </el-icon>
       </el-icon>
-      <template #title>Navigator Two</template>
+      <template #title>添加任务</template>
     </el-menu-item>
-    <el-menu-item index="3" disabled>
+    <el-menu-item index="/task/list">
       <el-icon>
-        <document/>
+        <el-icon>
+          <Memo/>
+        </el-icon>
       </el-icon>
-      <template #title>Navigator Three</template>
-    </el-menu-item>
-    <el-menu-item index="4">
-      <el-icon>
-        <setting/>
-      </el-icon>
-      <template #title>Navigator Four</template>
+      <template #title>任务列表</template>
     </el-menu-item>
   </el-menu>
   <el-button class="el-menu-button" :class="{'el-menu-button-in':!isCollapse}"
@@ -68,13 +61,13 @@ import {
   Document,
   Menu as IconMenu,
   Location,
-  Setting, ArrowRight, ArrowLeft
+  Setting, ArrowRight
 } from '@element-plus/icons-vue'
-import {useRoute, useRouter} from "vue-router";
+import {useRoute} from "vue-router";
 
 const isCollapse = ref(false)
 const collapseButtonIcon = ref(ArrowRight)
-const collapseButtonClass = ref("el-menu-button-in")
+ref("el-menu-button-in");
 const handleOpen = (key: string, keyPath: string[]) => {
 
   console.log(key, keyPath)
@@ -104,6 +97,7 @@ watch(() => route.path, () => {
 <style scoped>
 .el-menu-vertical {
   height: 100%;
+  min-width: 64px;
 }
 
 .el-menu-button {
@@ -113,7 +107,7 @@ watch(() => route.path, () => {
 
 .el-menu-button-in {
   -webkit-animation-name: buttonRotateIn;
-  -webkit-animation-duration: 500ms;
+  -webkit-animation-duration: 100ms;
   -webkit-animation-iteration-count: 1;
   -webkit-animation-delay: 0s;
   transform: rotate(180deg);

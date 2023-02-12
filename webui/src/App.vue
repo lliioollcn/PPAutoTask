@@ -38,6 +38,7 @@ loading.close()
   overflow: hidden;
   display: flex;
   place-items: center;
+  min-width: 64px;
 }
 
 .header {
@@ -47,6 +48,6 @@ loading.close()
 
 .main {
   padding: 0;
-  margin: 0;
+  margin: 10px 0 0 10px;
 }
 </style>
