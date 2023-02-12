@@ -3,6 +3,7 @@ body, html, #app, .content, .el-container {
     height: 100%;
     margin: 0 0 auto;
     font-weight: normal;
+    overflow: hidden;
 }
 
 .el-aside, .el-main {

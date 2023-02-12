@@ -1,13 +1,21 @@
 <template>
   <el-menu
-      default-active="2"
+      default-active="/"
       class="el-menu-vertical"
       :collapse="isCollapse"
       menu-trigger="hover"
       @open="handleOpen"
       @close="handleClose"
+      @select="handleSelect"
+      :router="true"
   >
-    <el-sub-menu index="1">
+    <el-menu-item index="/">
+      <el-icon>
+        <icon-menu/>
+      </el-icon>
+      <template #title>主页</template>
+    </el-menu-item>
+    <el-sub-menu>
       <template #title>
         <el-icon>
           <location/>
@@ -16,7 +24,7 @@
       </template>
       <el-menu-item-group>
         <template #title><span>Group One</span></template>
-        <el-menu-item index="1-1">item one</el-menu-item>
+        <el-menu-item index="/about">item one</el-menu-item>
         <el-menu-item index="1-2">item two</el-menu-item>
       </el-menu-item-group>
       <el-menu-item-group title="Group Two">
@@ -55,35 +63,39 @@
 <script setup lang="ts">
 
 
-import {ref} from 'vue'
+import {ref, watch} from 'vue'
 import {
   Document,
   Menu as IconMenu,
   Location,
   Setting, ArrowRight, ArrowLeft
 } from '@element-plus/icons-vue'
+import {useRoute, useRouter} from "vue-router";
 
-const isCollapse = ref(true)
+const isCollapse = ref(false)
 const collapseButtonIcon = ref(ArrowRight)
 const collapseButtonClass = ref("el-menu-button-in")
 const handleOpen = (key: string, keyPath: string[]) => {
+
+  console.log(key, keyPath)
+}
+const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
 const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
 const collapseMenu = () => {
-  if (isCollapse.value) {
-    //collapseButtonIcon.value = ArrowLeft
-    //collapseButtonClass.value = "el-menu-button-in"
-    isCollapse.value = false
-  } else {
-    isCollapse.value = true
-    //collapseButtonClass.value = "el-menu-button-out"
-    //collapseButtonIcon.value = ArrowRight
-  }
-
+  isCollapse.value = !isCollapse.value;
 }
+
+const route = useRoute()
+
+
+watch(() => route.path, () => {
+
+
+})
 
 
 </script>
