@@ -58,10 +58,8 @@
 
 import {ref, watch} from 'vue'
 import {
-  Document,
-  Menu as IconMenu,
   Location,
-  Setting, ArrowRight
+  ArrowRight
 } from '@element-plus/icons-vue'
 import {useRoute} from "vue-router";
 
