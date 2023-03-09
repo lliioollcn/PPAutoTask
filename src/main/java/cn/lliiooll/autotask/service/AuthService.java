@@ -83,7 +83,7 @@ public class AuthService {
                         .reason("")
                         .userName(bean.getEmail())
                         .build());
-                //mailService.sendVerifyMail(bean.getEmail());
+                mailService.sendVerifyMail(bean.getEmail());
                 return true;
             } else {
                 register(bean);
@@ -138,7 +138,7 @@ public class AuthService {
                             .authed(data.getEmailAuthed())
                             .banned(data.getIsBanned())
                             .msg("登录成功")
-                            .token(token + "_" + time)
+                            .at_token(token + "_" + time)
                             .build();
                 }
             }

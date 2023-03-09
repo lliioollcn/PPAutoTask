@@ -52,10 +52,14 @@ import {ElMessage} from "element-plus";
 
 const handleCommand = (command: string | number | object) => {
   if (command === "logout") {
+    localStorage.setItem("at_token", "")
     ElMessage({
       showClose: true,
       message: '退出成功',
     })
+    setTimeout(() => {
+      location.reload()
+    }, 500)
   }
 }
 

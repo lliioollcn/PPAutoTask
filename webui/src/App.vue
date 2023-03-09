@@ -26,7 +26,8 @@
                       show-password/>
           </el-form-item>
           <el-form-item>
-            <VaptchaVerify @onSuccess="vaptchaSuccess" @onCancel="vaptchaCancel" vid="5e39249176cb1970819eab8d" :open="openVerify"/>
+            <VaptchaVerify @onSuccess="vaptchaSuccess" @onCancel="vaptchaCancel" vid="5e39249176cb1970819eab8d"
+                           :open="openVerify"/>
           </el-form-item>
         </el-form>
         <template #footer>
@@ -80,43 +81,45 @@ const form = reactive({
   passAgain: '',
 })
 
-
-authStatus().then((resp) => {
-  if (resp.data.status == 0) {
-    isLogin.value = false
-    isRegister.value = false
-    isAuth.value = true
-  } else {
-    isLogin.value = true
-    isRegister.value = false
-    isAuth.value = false
-    if (resp.data.status != 1001) {
-      ElMessageBox.alert(resp.data.msg, "错误", {
-        confirmButtonText: "确定"
-      })
+const tryAuthStatus = () => {
+  authStatus().then((resp) => {
+    if (resp.data.status == 0) {
+      isLogin.value = false
+      isRegister.value = false
+      isAuth.value = true
+    } else {
+      isLogin.value = true
+      isRegister.value = false
+      isAuth.value = false
+      if (resp.data.status != 1001) {
+        ElMessageBox.alert(resp.data.msg, "错误", {
+          confirmButtonText: "确定"
+        })
+      }
     }
-  }
-  loading.close()
+    loading.close()
 
-}).catch((error) => {
-  if (error.response) {
-    // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-    console.log(error.response.data);
-    console.log(error.response.status);
-    console.log(error.response.headers);
-  }
-  ElMessageBox.alert("服务器错误", "错误", {
-    confirmButtonText: "确定"
+  }).catch((error) => {
+    if (error.response) {
+      // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    }
+    ElMessageBox.alert("服务器错误", "错误", {
+      confirmButtonText: "确定"
+    })
+    loading.close()
   })
-  loading.close()
-})
+}
 
+tryAuthStatus()
 
 const clickLogin = () => {
   openVerify.value = true
 }
 
-const vaptchaCancel = ()=>{
+const vaptchaCancel = () => {
   openVerify.value = false
 }
 const vaptchaSuccess = (token: string, server: string) => {
@@ -131,9 +134,9 @@ const vaptchaSuccess = (token: string, server: string) => {
       ElMessageBox.alert("登录失败，原因:" + resp.data.msg, "登录失败", {
         confirmButtonText: "确定"
       })
-
     } else {
-
+      localStorage.setItem("at_token", resp.data.data.at_token)
+      location.reload()
     }
   })
 
