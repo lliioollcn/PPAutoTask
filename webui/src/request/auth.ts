@@ -16,3 +16,11 @@ export function authLogin(param: any) {
         data: param
     });
 }
+
+export function authRegister(param: any) {
+    return request({
+        url: "/auth/register",
+        method: "post",
+        data: param
+    });
+}

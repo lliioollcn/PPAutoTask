@@ -36,7 +36,8 @@ public class AuthController {
         if (Utils.isValidBody(jstr, AuthBean.class)) {
             AuthBean bean = JSONUtil.toBean(jstr, AuthBean.class);
             if (StrUtil.isAllNotBlank(bean.getEmail(), bean.getPassWord(), bean.getToken(), bean.getServer())
-                    && ReUtil.isMatch("[-|a-z0-9A-Z._]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\\\.)+[a-z]{2,}$", bean.getEmail())
+                    && ReUtil.isMatch("^(\\w+([-.][A-Za-z0-9]+)*){3,18}@\\w+([-.][A-Za-z0-9]+)*\\.\\w+([-.][A-Za-z0-9]+)*$", bean.getEmail())
+                    // 密码超过8位数，限制最大长度20位，必须由数字、字母、符号其中两种组成
                     && ReUtil.isMatch("(?!\\d+$)(?!^[a-zA-Z]+$)(?!^[_#@]+$).{8,20}", bean.getPassWord())) {
                 if (authService.vaptcha(bean.getToken(), bean.getServer(), NetUtils.getIpAddr(request))) {
                     if (authService.register(bean)) {
