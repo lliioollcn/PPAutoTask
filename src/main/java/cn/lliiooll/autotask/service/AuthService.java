@@ -1,14 +1,17 @@
 package cn.lliiooll.autotask.service;
 
+import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.symmetric.DES;
 import cn.lliiooll.autotask.data.bean.AuthBean;
 import cn.lliiooll.autotask.data.bean.LoginRespBean;
 import cn.lliiooll.autotask.data.pojo.UserData;
 import cn.lliiooll.autotask.data.redis.UserToken;
 import cn.lliiooll.autotask.data.service.UserService;
 import cn.lliiooll.autotask.utils.RedisUtil;
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,17 @@ public class AuthService {
     private final VaptchaService vaptchaService;
     private final Oauth2Service oauth2Service;
     private final SecurityService securityService;
+
+    @PostConstruct
+    public void init() {
+        /*
+        register(AuthBean.builder()
+                .email("lliiooll@lliiooll.cn")
+                .passWord("18169081668qq")
+                .build());
+
+         */
+    }
 
     public boolean auth(String token, String ipAddr) {
         log.info("尝试验证用户,Token: {},IP: {}", token, ipAddr);
@@ -57,7 +71,8 @@ public class AuthService {
                     RandomUtil.BASE_NUMBER, 5);
             if (!userService.checkUserByMid(mid)) {
                 String salt = RandomUtil.randomString(16);
-                String pass = SecureUtil.pbkdf2(bean.getPassWord().toCharArray(), salt.getBytes(StandardCharsets.UTF_8)) + "#" + salt;
+                DES des = SecureUtil.des();
+                String pass = SecureUtil.sha1(des.encryptHex(bean.getPassWord()) + "@" + SecureUtil.md5(salt)) + "#" + Base64.encode(des.getSecretKey().getEncoded()) + "#" + salt;
                 userService.insertUserData(UserData.builder()
                         .mid(mid)
                         .email(bean.getEmail())
@@ -68,7 +83,7 @@ public class AuthService {
                         .reason("")
                         .userName(bean.getEmail())
                         .build());
-                mailService.sendVerifyMail(bean.getEmail());
+                //mailService.sendVerifyMail(bean.getEmail());
                 return true;
             } else {
                 register(bean);
@@ -93,8 +108,10 @@ public class AuthService {
         UserData data = userService.selectUserDataByEmail(bean.getEmail());
         if (data != null) {
             String[] passType = data.getPassWord().split("#");
-            if (passType.length == 2) {
-                String pass = SecureUtil.pbkdf2(bean.getPassWord().toCharArray(), passType[1].getBytes(StandardCharsets.UTF_8));
+            if (passType.length == 3) {
+                DES des = SecureUtil.des(Base64.decode(passType[1]));
+                String salt = passType[2];
+                String pass = SecureUtil.sha1(des.encryptHex(bean.getPassWord()) + "@" + SecureUtil.md5(salt));
                 if (pass.equalsIgnoreCase(passType[0])) {
                     String token = "at_" + SecureUtil.hmacSha1(data.getMid()).digestHex(data.getEmail());
                     Object ins = redisUtil.get(token);

@@ -2,17 +2,17 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.lliiooll.autotask.data.mapper.UserMapper">
+<mapper namespace="cn.lliiooll.autotask.data.mapper.SysMapper">
 
-    <select id="selectAllTask" resultMap="cn.lliiooll.autotask.data.pojo.SysTask">
+    <select id="selectAllTask" resultType="cn.lliiooll.autotask.data.pojo.SysTask">
         select u.*
         from sys_task u
     </select>
 
-    <select id="selectTaskByTaskType" parameterType="Integer" resultMap="cn.lliiooll.autotask.data.pojo.SysTask">
+    <select id="selectTaskByTaskType" parameterType="Integer" resultType="cn.lliiooll.autotask.data.pojo.SysTask">
         select u.*
         from sys_task u
-        where u.taskType = = #{taskType}
+        where u.taskType = #{taskType}
     </select>
 
     <insert id="insertTask" parameterType="cn.lliiooll.autotask.data.pojo.SysTask" useGeneratedKeys="true"

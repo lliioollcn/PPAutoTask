@@ -4,37 +4,37 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.lliiooll.autotask.data.mapper.UserMapper">
 
-    <select id="selectAllUserData" resultMap="cn.lliiooll.autotask.data.pojo.UserData">
+    <select id="selectAllUserData" resultType="cn.lliiooll.autotask.data.pojo.UserData">
         select u.*
         from user_data u
     </select>
 
-    <select id="selectAllUserTask" resultMap="cn.lliiooll.autotask.data.pojo.UserTask">
+    <select id="selectAllUserTask" resultType="cn.lliiooll.autotask.data.pojo.UserTask">
         select u.*
         from user_task u
     </select>
 
-    <select id="selectUserTaskByMid" parameterType="String" resultMap="cn.lliiooll.autotask.data.pojo.UserTask">
+    <select id="selectUserTaskByMid" parameterType="String" resultType="cn.lliiooll.autotask.data.pojo.UserTask">
         select u.*
         from user_task u
-        where u.mid = = #{mid}
+        where u.mid =  #{mid}
     </select>
-    <select id="selectUserTaskByTaskType" parameterType="Integer" resultMap="cn.lliiooll.autotask.data.pojo.UserTask">
+    <select id="selectUserTaskByTaskType" parameterType="Integer" resultType="cn.lliiooll.autotask.data.pojo.UserTask">
         select u.*
         from user_task u
-        where u.taskType = = #{taskType}
+        where u.taskType =  #{taskType}
     </select>
 
-    <select id="selectUserDataByMid" parameterType="String" resultMap="cn.lliiooll.autotask.data.pojo.UserData">
+    <select id="selectUserDataByMid" parameterType="String" resultType="cn.lliiooll.autotask.data.pojo.UserData">
         select u.*
         from user_data u
-        where u.mid = = #{mid}
+        where u.mid =  #{mid}
     </select>
 
-    <select id="selectUserDataByEmail" parameterType="String" resultMap="cn.lliiooll.autotask.data.pojo.UserData">
+    <select id="selectUserDataByEmail" parameterType="String" resultType="cn.lliiooll.autotask.data.pojo.UserData">
         select u.*
         from user_data u
-        where u.email = = #{email}
+        where u.email =  #{email}
     </select>
 
     <insert id="insertUserData" parameterType="cn.lliiooll.autotask.data.pojo.UserData" useGeneratedKeys="true"
@@ -49,7 +49,7 @@
                               reason,
                               createTime)
         values (#{mid},
-                #{deptId},
+                #{userName},
                 #{email},
                 #{passWord},
                 #{emailAuthed},

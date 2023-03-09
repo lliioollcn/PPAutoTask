@@ -1,11 +1,11 @@
 package cn.lliiooll.autotask.data.mapper;
 
 import cn.lliiooll.autotask.data.pojo.SysTask;
-import cn.lliiooll.autotask.data.pojo.UserData;
-import cn.lliiooll.autotask.data.pojo.UserTask;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface SysMapper {
 
     List<SysTask> selectAllTask();
