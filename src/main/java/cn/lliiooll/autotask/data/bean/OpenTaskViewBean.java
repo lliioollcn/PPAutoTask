@@ -14,7 +14,7 @@ public class OpenTaskViewBean {
 
     private String name;
     private String email;
-    private long last;
+    private String last;
     private String task;
     private int status;
 }

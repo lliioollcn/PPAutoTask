@@ -1,5 +1,6 @@
 package cn.lliiooll.autotask.controller;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.lliiooll.autotask.data.bean.OpenTaskViewBean;
 import cn.lliiooll.autotask.data.bean.OpenUserTaskBean;
@@ -20,10 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @RestController
 @RequestMapping("/open")
@@ -77,8 +75,8 @@ public class OpenController {
             return AjaxResult.builder().status(AjaxCodes.FAILED).msg("请求速率过快，请稍后再试").data(null).build();
 
         return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(new HashMap<String, Object>() {{
-            put("task",userService.selectUserTaskTotal());
-            put("user",userService.selectUserDataTotal());
+            put("task", userService.selectUserTaskTotal());
+            put("user", userService.selectUserDataTotal());
         }}).build();
     }
 
@@ -95,7 +93,7 @@ public class OpenController {
             datas.add(OpenTaskViewBean.builder()
                     .name(name)
                     .email(email)
-                    .last(task.getLastTime())
+                    .last(DateUtil.format(new Date(task.getLastTime()), "yyyy-MM-dd H:mm:ss"))
                     .status(task.getTaskStatus())
                     .task(sysService.selectTaskByTaskType(task.getTaskType()).getTaskName())
                     .build());

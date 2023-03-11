@@ -49,6 +49,7 @@ const loadData = (page: number) => {
       tableTotal.value = resp.data.data.total
       tableData.value = new Array<UserTaskData>()
       resp.data.data.list.forEach((d: UserTaskData) => {
+        d.status = d.status == 0 ? "成功" : d.status == 1 ? "进行中" : "失败"
         tableData.value.push(d)
       })
     }
