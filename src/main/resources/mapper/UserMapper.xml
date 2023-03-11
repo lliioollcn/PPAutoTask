@@ -66,12 +66,14 @@
                               taskStatus,
                               lastTime,
                               cookie,
+                              account,
                               createTime)
         values (#{mid},
                 #{taskType},
                 #{taskStatus},
                 #{lastTime},
                 #{cookie},
+                #{account},
                 sysdate())
     </insert>
 
@@ -97,6 +99,7 @@
             <if test="cookie != null and cookie != ''">mid = #{cookie},</if>
             <if test="taskType != null ">taskType = #{taskType},</if>
             <if test="taskStatus != null ">taskStatus = #{taskStatus},</if>
+            <if test="account != null ">account = #{account},</if>
             lastTime = sysdate()
         </set>
         where id = #{id}

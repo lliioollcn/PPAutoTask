@@ -12,6 +12,7 @@ import cn.lliiooll.autotask.data.redis.UserToken;
 import cn.lliiooll.autotask.data.service.UserService;
 import cn.lliiooll.autotask.utils.RedisUtil;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -159,5 +160,22 @@ public class AuthService {
         data.setEmailAuthed(1);
         userService.updateUserData(data);
         return true;
+    }
+
+    public String getUserMid(String token) {
+
+        String[] tokenType = token.split("\\_");
+        if (tokenType.length == 3) {
+            String timeStr = tokenType[2];
+            if (StrUtil.isNumeric(timeStr)) {
+                String key = tokenType[0] + "_" + tokenType[1];
+                Object ins = redisUtil.get(key);
+                if (ins instanceof UserToken) {
+                    UserToken uT = (UserToken) ins;
+                    return uT.getMid();
+                }
+            }
+        }
+        return null;
     }
 }

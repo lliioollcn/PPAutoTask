@@ -1,4 +1,4 @@
-package cn.lliiooll.autotask.data.pojo;
+package cn.lliiooll.autotask.data.bean;
 
 
 import cn.hutool.json.JSONUtil;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserTask {
+public class UserTaskBean {
 
     private String mid;
     private int taskType;
@@ -19,10 +19,6 @@ public class UserTask {
     private int id;
     private long lastTime;
     private String cookie;
+    private String taskName;
     private String account;
-
-    @Override
-    public String toString() {
-        return JSONUtil.toJsonStr(this);
-    }
 }

@@ -163,7 +163,7 @@ const clickLogin = () => {
     ElMessageBox.alert("邮箱格式不正确!", "登录失败", {
       confirmButtonText: "确定"
     })
-  } else if (form.pass.trim().length < 1 || form.passAgain.trim().length < 1) {
+  } else if (form.pass.trim().length < 1 || (form.passAgain.trim().length < 1 && isRegister.value)) {
     ElMessageBox.alert("密码不能为空!", "登录失败", {
       confirmButtonText: "确定"
     })

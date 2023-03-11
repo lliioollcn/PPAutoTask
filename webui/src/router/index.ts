@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import HomeView from "@/views/HomeView.vue";
+import UserTask from "@/views/UserTask.vue";
 
 
 const router = createRouter({
@@ -18,9 +19,9 @@ const router = createRouter({
         {
             path: '/task/list',
             name: '任务列表',
-            component: HomeView
+            component: UserTask
         }
     ]
 })
 
-export default router
+export default router;

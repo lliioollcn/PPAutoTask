@@ -13,7 +13,7 @@ public interface UserMapper {
 
     List<UserTask> selectAllUserTask();
 
-    UserTask selectUserTaskByMid(String mid);
+    List<UserTask> selectUserTaskByMid(String mid);
 
     UserData selectUserDataByMid(String mid);
 

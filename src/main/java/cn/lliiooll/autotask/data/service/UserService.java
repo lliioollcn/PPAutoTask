@@ -10,7 +10,7 @@ public interface UserService {
 
     List<UserTask> selectAllUserTask();
 
-    UserTask selectUserTaskByMid(String mid);
+    List<UserTask> selectUserTaskByMid(String mid);
 
     /**
      * @param mid

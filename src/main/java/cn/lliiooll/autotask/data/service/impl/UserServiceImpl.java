@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserTask selectUserTaskByMid(String mid) {
+    public List<UserTask> selectUserTaskByMid(String mid) {
         return mapper.selectUserTaskByMid(mid);
     }
 
