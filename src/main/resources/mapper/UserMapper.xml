@@ -14,27 +14,48 @@
         from user_task u
     </select>
 
+    <select id="selectLimitUserTask" resultType="cn.lliiooll.autotask.data.pojo.UserTask">
+        select u.*
+        from user_task u
+       limit #{limit}
+        offset #{offset}
+    </select>
+
+    <select id="selectLimitUserData" resultType="cn.lliiooll.autotask.data.pojo.UserData">
+        select u.*
+        from user_data u
+            limit #{limit}
+        offset #{offset}
+    </select>
+
     <select id="selectUserTaskByMid" parameterType="String" resultType="cn.lliiooll.autotask.data.pojo.UserTask">
         select u.*
         from user_task u
-        where u.mid =  #{mid}
+        where u.mid = #{mid}
     </select>
     <select id="selectUserTaskByTaskType" parameterType="Integer" resultType="cn.lliiooll.autotask.data.pojo.UserTask">
         select u.*
         from user_task u
-        where u.taskType =  #{taskType}
+        where u.taskType = #{taskType}
     </select>
 
     <select id="selectUserDataByMid" parameterType="String" resultType="cn.lliiooll.autotask.data.pojo.UserData">
         select u.*
         from user_data u
-        where u.mid =  #{mid}
+        where u.mid = #{mid}
     </select>
 
     <select id="selectUserDataByEmail" parameterType="String" resultType="cn.lliiooll.autotask.data.pojo.UserData">
         select u.*
         from user_data u
-        where u.email =  #{email}
+        where u.email = #{email}
+    </select>
+
+    <select id="selectUserTaskTotal" resultType="Integer">
+        SELECT COUNT(*) FROM user_task
+    </select>
+    <select id="selectUserDataTotal" resultType="Integer">
+        SELECT COUNT(*) FROM user_data
     </select>
 
     <insert id="insertUserData" parameterType="cn.lliiooll.autotask.data.pojo.UserData" useGeneratedKeys="true"

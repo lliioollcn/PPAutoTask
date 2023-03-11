@@ -1,5 +1,5 @@
 <template>
-  <el-empty style="height: 100%" v-if="isEmpty" description="还没有任务哦，耐心等管理员添加吧~"/>
+  <el-empty style="height: 100%;width: 100%" v-if="isEmpty" description="还没有任务哦，耐心等管理员添加吧~"/>
   <div v-for="task in tasks" style="padding-left: 20px;padding-right: 20px;padding-top: 10px;">
     <el-dialog v-model="editShow" title="添加任务">
       <el-form :model="form">
@@ -106,6 +106,7 @@ const clickAddSubmit = (id: any) => {
 <style>
 .el-scrollbar__view {
   height: 100%;
+  width: 100%;
   display: flex;
 }
 

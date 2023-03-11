@@ -40,4 +40,24 @@ public class SafeService {
         redis.set(email, emC, 60 * 10);
         return false;
     }
+
+    public boolean limit(HttpServletRequest request) {
+        String ip = NetUtils.getIpAddr(request);
+        Object ipLo = redis.get(ip);
+
+        if (ipLo == null) {
+            redis.set(ip, 1, 60 * 10);
+
+            return false;
+        }
+        int ipC = (int) ipLo;
+        if (ipC > 300) {
+            redis.set(ip, ipC, 60 * 10);
+            return true;
+        }
+        ipC++;
+        redis.set(ip, ipC, 60 * 10);
+
+        return false;
+    }
 }

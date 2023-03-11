@@ -46,7 +46,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *
      * @param email
      * @return 用户是否存在
      */
@@ -103,6 +102,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserTaskById(int id) {
         mapper.deleteUserTaskById(id);
+    }
+
+    @Override
+    public List<UserTask> selectAllUserTask(int limit, int offset) {
+        return mapper.selectLimitUserTask(limit, offset);
+    }
+
+    @Override
+    public int selectUserTaskTotal() {
+        return mapper.selectUserTaskTotal();
+    }
+
+    @Override
+    public int selectUserDataTotal() {
+        return mapper.selectUserDataTotal();
+    }
+
+    @Override
+    public List<UserData> selectAllUserData(int limit, int offset) {
+        return mapper.selectLimitUserData(limit, offset);
     }
 
 }

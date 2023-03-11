@@ -16,7 +16,6 @@ export function sysTasks() {
 }
 
 
-
 export function taskDetails(type: any) {
     return request({
         url: "/task/details",
@@ -64,10 +63,29 @@ export function taskEdit(param: any) {
         data: param
     });
 }
+
 export function taskAdd(param: any) {
     return request({
         url: "/task/add",
         method: "post",
         data: param
+    });
+}
+
+
+export function taskView(page: any) {
+    return request({
+        url: "/open/view",
+        method: "get",
+        params: {
+            "page": page
+        }
+    });
+}
+
+export function taskTotal() {
+    return request({
+        url: "/open/total",
+        method: "get",
     });
 }

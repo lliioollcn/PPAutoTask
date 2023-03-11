@@ -15,6 +15,15 @@ public interface UserMapper {
 
     List<UserTask> selectUserTaskByMid(String mid);
 
+    int selectUserTaskTotal();
+
+    int selectUserDataTotal();
+
+    List<UserData> selectLimitUserData(int limit, int offset);
+
+    List<UserTask> selectLimitUserTask(int limit, int offset);
+
+
     UserData selectUserDataByMid(String mid);
 
     UserData selectUserDataByEmail(String email);
@@ -32,6 +41,7 @@ public interface UserMapper {
     void deleteUserDataByMid(String mid);
 
     void deleteUserTaskByMid(String mid);
+
     void deleteUserTaskById(int id);
 
 }

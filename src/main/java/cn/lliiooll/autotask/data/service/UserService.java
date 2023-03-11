@@ -42,4 +42,10 @@ public interface UserService {
 
     void deleteUserTaskByMid(String mid);
     void deleteUserTaskById(int id);
+
+    List<UserTask> selectAllUserTask(int limit, int offset);
+
+    int selectUserTaskTotal();
+    int selectUserDataTotal();
+    List<UserData> selectAllUserData(int limit, int offset);
 }

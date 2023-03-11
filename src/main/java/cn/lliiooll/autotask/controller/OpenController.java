@@ -1,6 +1,7 @@
 package cn.lliiooll.autotask.controller;
 
 import cn.hutool.core.util.StrUtil;
+import cn.lliiooll.autotask.data.bean.OpenTaskViewBean;
 import cn.lliiooll.autotask.data.bean.OpenUserTaskBean;
 import cn.lliiooll.autotask.data.pojo.UserData;
 import cn.lliiooll.autotask.data.pojo.UserTask;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/open")
@@ -66,5 +69,53 @@ public class OpenController {
             }
         }
         return AjaxResult.builder().status(AjaxCodes.FAILED).msg("请求参数错误").data(null).build();
+    }
+
+    @GetMapping("/total")
+    public AjaxResult total() {
+        if (safeService.limit(request))
+            return AjaxResult.builder().status(AjaxCodes.FAILED).msg("请求速率过快，请稍后再试").data(null).build();
+
+        return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(new HashMap<String, Object>() {{
+            put("task",userService.selectUserTaskTotal());
+            put("user",userService.selectUserDataTotal());
+        }}).build();
+    }
+
+    @GetMapping("/view")
+    public AjaxResult view(int page) {
+        if (safeService.limit(request))
+            return AjaxResult.builder().status(AjaxCodes.FAILED).msg("请求速率过快，请稍后再试").data(null).build();
+        List<UserTask> userTasks = userService.selectAllUserTask(12, page * 12);
+        List<OpenTaskViewBean> datas = new ArrayList<>();
+        for (UserTask task : userTasks) {
+            UserData data = userService.selectUserDataByMid(task.getMid());
+            String name = replace(task.getAccount());
+            String email = replace(data.getEmail());
+            datas.add(OpenTaskViewBean.builder()
+                    .name(name)
+                    .email(email)
+                    .last(task.getLastTime())
+                    .status(task.getTaskStatus())
+                    .task(sysService.selectTaskByTaskType(task.getTaskType()).getTaskName())
+                    .build());
+        }
+        return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(new HashMap<String, Object>() {{
+            put("total", userService.selectUserTaskTotal());
+            put("page", page);
+            put("list", datas.toArray());
+        }}).build();
+    }
+
+    private String replace(String name) {
+        return (name.length() / 2 < 1 ? "" : append(name.length() / 2)) + name.substring(Math.max(name.length() / 2, 1));
+    }
+
+    private String append(int i) {
+        StringBuilder sb = new StringBuilder();
+        for (int q = 0; q < i; q++) {
+            sb.append("*");
+        }
+        return sb.toString();
     }
 }
