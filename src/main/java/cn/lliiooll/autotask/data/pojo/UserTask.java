@@ -18,6 +18,7 @@ public class UserTask {
     private int taskStatus;
     private int id;
     private long lastTime;
+    private long createTime;
     private String cookie;
     private String account;
 

@@ -35,6 +35,11 @@ public class TaskController {
         return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(taskService.user(request)).build();
     }
 
+    @GetMapping("/sys")
+    public AjaxResult sys() {
+        return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(taskService.sys(request)).build();
+    }
+
     @GetMapping("/log")
     public AjaxResult log(int id) {
         // 返回任务日志，判断这个任务是不是这个账号的，并且判断这个任务不是在运行中
@@ -60,7 +65,21 @@ public class TaskController {
             JSONObject json = JSONUtil.parseObj(data);
             int id = json.getInt("id");
             String cookie = json.getStr("cookie");
-            return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("保存成功").data(taskService.edit(request,id,cookie)).build();
+            if (StrUtil.isNotBlank(cookie))
+                return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("保存成功").data(taskService.edit(request, id, cookie)).build();
+        }
+        return AjaxResult.builder().status(AjaxCodes.FAILED).msg("数据不能为空").data(null).build();
+    }
+
+    @PostMapping("/add")
+    public AjaxResult add(@RequestBody String data) {
+        // 更新Cookie
+        if (StrUtil.isNotBlank(data) && JSONUtil.isTypeJSON(data)) {
+            JSONObject json = JSONUtil.parseObj(data);
+            int taskType = json.getInt("id");
+            String cookie = json.getStr("cookie");
+            if (StrUtil.isNotBlank(cookie))
+                return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("添加成功").data(taskService.add(request, taskType, cookie)).build();
         }
         return AjaxResult.builder().status(AjaxCodes.FAILED).msg("数据不能为空").data(null).build();
     }

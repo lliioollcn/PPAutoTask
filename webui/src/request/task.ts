@@ -8,6 +8,14 @@ export function userTasks() {
     });
 }
 
+export function sysTasks() {
+    return request({
+        url: "/task/sys",
+        method: "get"
+    });
+}
+
+
 
 export function taskDetails(type: any) {
     return request({
@@ -52,6 +60,13 @@ export function taskDelete(id: any) {
 export function taskEdit(param: any) {
     return request({
         url: "/task/edit",
+        method: "post",
+        data: param
+    });
+}
+export function taskAdd(param: any) {
+    return request({
+        url: "/task/add",
         method: "post",
         data: param
     });

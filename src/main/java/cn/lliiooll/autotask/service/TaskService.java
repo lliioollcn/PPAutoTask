@@ -115,12 +115,40 @@ public class TaskService {
     public String edit(HttpServletRequest request, int id, String cookie) {
         String token = request.getHeader("Token");
         String mid = this.authService.getUserMid(token);
-        for (UserTask task : userService.selectUserTaskByMid(mid)) {
-            if (task.getId() == id) {
-                task.setCookie(cookie);
-                userService.updateUserTask(task);
-                return "保存成功";
+        if (userService.selectUserDataByMid(mid).getEmailAuthed() == 1) {
+            for (UserTask task : userService.selectUserTaskByMid(mid)) {
+                if (task.getId() == id) {
+                    task.setCookie(cookie);
+                    userService.updateUserTask(task);
+                    return "保存成功";
+                }
             }
+        }
+        return "";
+    }
+
+    public SysTask[] sys(HttpServletRequest request) {
+        String token = request.getHeader("Token");
+        String mid = this.authService.getUserMid(token);
+        if (userService.selectUserDataByMid(mid).getEmailAuthed() == 1) {
+            return sysService.selectAllTask().toArray(new SysTask[0]);
+        }
+        return new SysTask[0];
+    }
+
+    public String add(HttpServletRequest request, int taskType, String cookie) {
+        String token = request.getHeader("Token");
+        String mid = this.authService.getUserMid(token);
+        if (userService.selectUserDataByMid(mid).getEmailAuthed() == 1) {
+            userService.insertUserTask(UserTask.builder()
+                    .taskType(taskType)
+                    .cookie(cookie)
+                    .taskStatus(0)
+                    .lastTime(0)
+                    .account("未知")
+                    .mid(mid)
+                            .createTime(System.currentTimeMillis())
+                    .build());
         }
         return "";
     }

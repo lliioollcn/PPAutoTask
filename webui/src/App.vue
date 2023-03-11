@@ -130,6 +130,11 @@ const tryAuthStatus = () => {
       isLogin.value = false
       isRegister.value = false
       isAuth.value = true
+      if (resp.data.data == 0) {
+        ElMessageBox.alert("请在您的邮箱寻找验证邮件并进行验证后继续。如果你没有收到邮件，请查看垃圾箱。<br\> 如果你没有验证邮箱，你将不能添加任何任务", "提示", {
+          confirmButtonText: "确定"
+        })
+      }
     } else {
       isLogin.value = true
       isRegister.value = false
