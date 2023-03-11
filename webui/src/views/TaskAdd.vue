@@ -106,6 +106,7 @@ const clickAddSubmit = (id: any) => {
 <style>
 .el-scrollbar__view {
   height: 100%;
+  display: flex;
 }
 
 .task-box {
