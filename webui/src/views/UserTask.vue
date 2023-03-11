@@ -11,9 +11,11 @@
             :column="1">
           <el-descriptions-item label="任务名称:">{{ task.taskName }}</el-descriptions-item>
           <el-descriptions-item label="任务账号:">{{ task.account }}</el-descriptions-item>
-          <el-descriptions-item label="任务状态:">{{ task.taskStatus == 0 ? "成功" : "失败" }}</el-descriptions-item>
+          <el-descriptions-item label="任务状态:">
+            {{ task.taskStatus == 0 ? "成功" : task.taskStatus == 1 ? "运行中" : "失败" }}
+          </el-descriptions-item>
           <el-descriptions-item label="上次执行:">{{
-              task.lastTime == 0 ? "从未执行" : new Date(task.lastTime / 1000).toLocaleString()
+              task.lastTime == 0 ? "从未执行" : new Date(task.lastTime).toLocaleString()
             }}
           </el-descriptions-item>
 
@@ -22,7 +24,7 @@
       <div class="task-box-btn">
         <el-button type="success" :icon="CaretRight" circle @click="clickRun(task.id)"/>
         <el-button type="primary" :icon="Edit" circle/>
-        <el-button type="info" :icon="More" circle/>
+        <el-button type="info" :icon="More" circle @click="clickLog(task.id)"/>
         <el-button type="danger" :icon="Delete" circle/>
       </div>
     </div>
@@ -32,9 +34,9 @@
 <script setup lang="ts">
 
 import {ref} from "vue";
-import {taskRun, userTasks} from "@/request/task";
+import {taskLog, taskRun, userTasks} from "@/request/task";
 import {CaretRight, Delete, Edit, More} from "@element-plus/icons-vue";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 
 interface UserTaskData {
   mid: any
@@ -68,6 +70,16 @@ const clickRun = (id: any) => {
     ElMessage({
       showClose: true,
       message: '运行成功',
+
+    })
+  })
+}
+
+const clickLog = (id: any) => {
+  taskLog(id).then((resp) => {
+    ElMessageBox.alert(resp.data.data, '任务日志', {
+      confirmButtonText: '关闭',
+      dangerouslyUseHTMLString: true,
     })
   })
 }

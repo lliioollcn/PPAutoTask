@@ -36,7 +36,7 @@ public class TaskController {
     @GetMapping("/log")
     public AjaxResult log(int id) {
         // 返回任务日志，判断这个任务是不是这个账号的，并且判断这个任务不是在运行中
-        return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(null).build();
+        return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(taskService.log(id, request)).build();
     }
 
     @GetMapping("/start")

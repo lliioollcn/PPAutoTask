@@ -2,6 +2,7 @@ package cn.lliiooll.autotask.service.task;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import cn.lliiooll.autotask.data.pojo.SysTask;
 import cn.lliiooll.autotask.data.pojo.UserData;
 import cn.lliiooll.autotask.data.pojo.UserTask;
 import cn.lliiooll.autotask.data.service.UserService;
@@ -40,6 +41,7 @@ public class PPService extends BaseTaskService {
         String cookie = task.getCookie();
         JSONObject json = JSONUtil.parseObj(cookie);
         task.setAccount(json.getStr("nickname"));
+        task.setTaskStatus(1);
         service.updateUserTask(task);
         FileWriter fileWriter = taskLogService.createLog(task.getId());
         fileWriter.write("开始运行皮皮搞笑任务\n");
@@ -51,6 +53,9 @@ public class PPService extends BaseTaskService {
         fileWriter.write("皮皮搞笑任务结束\n");
         fileWriter.flush();
         fileWriter.close();
+        task.setLastTime(System.currentTimeMillis());
+        task.setTaskStatus(0);
+        service.updateUserTask(task);
     }
 
     private final Set<PPTaskBase> tasks = new CopyOnWriteArraySet<>();

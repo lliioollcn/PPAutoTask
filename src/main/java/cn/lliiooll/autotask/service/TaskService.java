@@ -23,13 +23,16 @@ public class TaskService {
     private SysService sysService;
     private UserService userService;
     private AuthService authService;
+    private TaskLogService taskLogService;
+
     private final Map<Integer, BaseTaskService> taskServices = new ConcurrentHashMap<>();
 
     @Autowired
-    public TaskService(SysService sysService, UserService userService, AuthService authService) {
+    public TaskService(SysService sysService, UserService userService, AuthService authService, TaskLogService taskLogService) {
         this.sysService = sysService;
         this.userService = userService;
         this.authService = authService;
+        this.taskLogService = taskLogService;
     }
 
 
@@ -84,5 +87,16 @@ public class TaskService {
             }
         }
         return null;
+    }
+
+    public String log(int id, HttpServletRequest request) {
+        String token = request.getHeader("Token");
+        String mid = this.authService.getUserMid(token);
+        for (UserTask task : userService.selectUserTaskByMid(mid)) {
+            if (task.getId() == id && task.getTaskStatus() != 1) {
+                return this.taskLogService.readLog(id).replace("\n","<br/>");
+            }
+        }
+        return "";
     }
 }

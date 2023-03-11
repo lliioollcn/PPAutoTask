@@ -28,3 +28,13 @@ export function taskRun(id: any) {
         }
     });
 }
+
+export function taskLog(id: any) {
+    return request({
+        url: "/task/log",
+        method: "get",
+        params: {
+            "id": id,
+        }
+    });
+}
