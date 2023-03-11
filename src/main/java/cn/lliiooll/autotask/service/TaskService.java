@@ -1,15 +1,21 @@
 package cn.lliiooll.autotask.service;
 
+import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.lliiooll.autotask.data.bean.UserTaskBean;
 import cn.lliiooll.autotask.data.pojo.SysTask;
+import cn.lliiooll.autotask.data.pojo.UserTask;
 import cn.lliiooll.autotask.data.service.SysService;
 import cn.lliiooll.autotask.data.service.UserService;
+import cn.lliiooll.autotask.service.task.BaseTaskService;
+import cn.lliiooll.autotask.service.task.PPService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class TaskService {
@@ -17,6 +23,7 @@ public class TaskService {
     private SysService sysService;
     private UserService userService;
     private AuthService authService;
+    private final Map<Integer, BaseTaskService> taskServices = new ConcurrentHashMap<>();
 
     @Autowired
     public TaskService(SysService sysService, UserService userService, AuthService authService) {
@@ -53,5 +60,29 @@ public class TaskService {
 
     public SysTask details(int type) {
         return sysService.selectTaskByTaskType(type);
+    }
+
+    public void register(BaseTaskService service, int type, String name) {
+        if (sysService.selectTaskByTaskType(type) == null) {
+            sysService.insertTask(SysTask.builder()
+                    .taskName(name)
+                    .taskType(type)
+                    .build());
+        }
+        taskServices.put(type, service);
+    }
+
+    public Object start(int id, HttpServletRequest request) {
+        String token = request.getHeader("Token");
+        String mid = this.authService.getUserMid(token);
+        for (UserTask task : userService.selectUserTaskByMid(mid)) {
+            if (task.getId() == id && task.getTaskStatus() != 1) {
+                BaseTaskService taskService = taskServices.get(task.getTaskType());
+                if (taskService != null) {
+                    ThreadUtil.execute(() -> taskService.doTask(userService, task, userService.selectUserDataByMid(task.getMid())));
+                }
+            }
+        }
+        return null;
     }
 }

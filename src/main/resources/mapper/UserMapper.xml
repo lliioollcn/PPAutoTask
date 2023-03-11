@@ -96,7 +96,7 @@
         update user_task
         <set>
             <if test="mid != null and mid != ''">mid = #{mid},</if>
-            <if test="cookie != null and cookie != ''">mid = #{cookie},</if>
+            <if test="cookie != null and cookie != ''">cookie = #{cookie},</if>
             <if test="taskType != null ">taskType = #{taskType},</if>
             <if test="taskStatus != null ">taskStatus = #{taskStatus},</if>
             <if test="account != null ">account = #{account},</if>

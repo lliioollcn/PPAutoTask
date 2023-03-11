@@ -7,9 +7,7 @@ import cn.lliiooll.autotask.service.TaskService;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/task")
@@ -33,6 +31,30 @@ public class TaskController {
     @GetMapping("/user")
     public AjaxResult user() {
         return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(taskService.user(request)).build();
+    }
+
+    @GetMapping("/log")
+    public AjaxResult log(int id) {
+        // 返回任务日志，判断这个任务是不是这个账号的，并且判断这个任务不是在运行中
+        return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(null).build();
+    }
+
+    @GetMapping("/start")
+    public AjaxResult start(int id) {
+        // 启动任务，判断这个任务是不是这个账号的，并且判断这个任务不是在运行中
+        return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(taskService.start(id, request)).build();
+    }
+
+    @GetMapping("/delete")
+    public AjaxResult delete(int id) {
+        // 删除任务，判断这个任务是不是这个账号的
+        return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(null).build();
+    }
+
+    @PostMapping("/edit")
+    public AjaxResult edit(@RequestBody String data) {
+        // 更新Cookie
+        return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(null).build();
     }
 
     @GetMapping("/details")

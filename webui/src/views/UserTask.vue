@@ -13,17 +13,17 @@
           <el-descriptions-item label="任务账号:">{{ task.account }}</el-descriptions-item>
           <el-descriptions-item label="任务状态:">{{ task.taskStatus == 0 ? "成功" : "失败" }}</el-descriptions-item>
           <el-descriptions-item label="上次执行:">{{
-              new Date(task.lastTime / 1000).toLocaleString()
+              task.lastTime == 0 ? "从未执行" : new Date(task.lastTime / 1000).toLocaleString()
             }}
           </el-descriptions-item>
 
         </el-descriptions>
       </div>
       <div class="task-box-btn">
-        <el-button type="primary" :icon="Edit" circle />
-        <el-button type="success" :icon="CaretRight" circle />
-        <el-button type="info" :icon="More" circle />
-        <el-button type="danger" :icon="Delete" circle />
+        <el-button type="success" :icon="CaretRight" circle @click="clickRun(task.id)"/>
+        <el-button type="primary" :icon="Edit" circle/>
+        <el-button type="info" :icon="More" circle/>
+        <el-button type="danger" :icon="Delete" circle/>
       </div>
     </div>
   </div>
@@ -32,8 +32,9 @@
 <script setup lang="ts">
 
 import {ref} from "vue";
-import {userTasks} from "@/request/task";
+import {taskRun, userTasks} from "@/request/task";
 import {CaretRight, Delete, Edit, More} from "@element-plus/icons-vue";
+import {ElMessage} from "element-plus";
 
 interface UserTaskData {
   mid: any
@@ -61,6 +62,15 @@ userTasks().then((resp) => {
     }
   }
 })
+
+const clickRun = (id: any) => {
+  taskRun(id).then((resp) => {
+    ElMessage({
+      showClose: true,
+      message: '运行成功',
+    })
+  })
+}
 </script>
 
 <style>
