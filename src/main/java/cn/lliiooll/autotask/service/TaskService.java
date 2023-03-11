@@ -94,7 +94,32 @@ public class TaskService {
         String mid = this.authService.getUserMid(token);
         for (UserTask task : userService.selectUserTaskByMid(mid)) {
             if (task.getId() == id && task.getTaskStatus() != 1) {
-                return this.taskLogService.readLog(id).replace("\n","<br/>");
+                return this.taskLogService.readLog(id).replace("\n", "<br/>");
+            }
+        }
+        return "";
+    }
+
+    public String delete(int id, HttpServletRequest request) {
+        String token = request.getHeader("Token");
+        String mid = this.authService.getUserMid(token);
+        for (UserTask task : userService.selectUserTaskByMid(mid)) {
+            if (task.getId() == id) {
+                userService.deleteUserTaskById(task.getId());
+                return "删除完毕";
+            }
+        }
+        return "";
+    }
+
+    public String edit(HttpServletRequest request, int id, String cookie) {
+        String token = request.getHeader("Token");
+        String mid = this.authService.getUserMid(token);
+        for (UserTask task : userService.selectUserTaskByMid(mid)) {
+            if (task.getId() == id) {
+                task.setCookie(cookie);
+                userService.updateUserTask(task);
+                return "保存成功";
             }
         }
         return "";

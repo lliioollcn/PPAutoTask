@@ -111,6 +111,11 @@
         from user_data
         where mid = #{mid}
     </delete>
+    <delete id="deleteUserTaskByMid" parameterType="String">
+        delete
+        from user_task
+        where id = #{mid}
+    </delete>
     <delete id="deleteUserTaskById" parameterType="Integer">
         delete
         from user_task

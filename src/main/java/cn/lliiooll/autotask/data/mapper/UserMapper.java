@@ -31,6 +31,7 @@ public interface UserMapper {
 
     void deleteUserDataByMid(String mid);
 
-    void deleteUserTaskById(String mid);
+    void deleteUserTaskByMid(String mid);
+    void deleteUserTaskById(int id);
 
 }

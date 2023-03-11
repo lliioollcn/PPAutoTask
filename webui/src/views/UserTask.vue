@@ -1,6 +1,21 @@
 <template>
   <el-empty style="height: 100%" v-if="isEmpty" description="还没有任务哦，快去添加一个吧~"/>
   <div v-for="task in tasks" style="padding-left: 20px;padding-right: 20px;padding-top: 10px;">
+    <el-dialog v-model="editShow" title="编辑任务">
+      <el-form :model="form">
+        <el-form-item label="Token">
+          <el-input v-model="form.cookie" autocomplete="off"/>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="editShow = false">取消</el-button>
+        <el-button type="primary" @click="clickEditSubmit(editId)">
+          保存
+        </el-button>
+      </span>
+      </template>
+    </el-dialog>
     <div class="task-box" :style="{
           boxShadow: `var(--el-box-shadow)`,
           borderRadius: `var(--el-border-radius-round)`,
@@ -23,9 +38,9 @@
       </div>
       <div class="task-box-btn">
         <el-button type="success" :icon="CaretRight" circle @click="clickRun(task.id)"/>
-        <el-button type="primary" :icon="Edit" circle/>
+        <el-button type="primary" :icon="Edit" circle @click="clickEdit(task.id)"/>
         <el-button type="info" :icon="More" circle @click="clickLog(task.id)"/>
-        <el-button type="danger" :icon="Delete" circle/>
+        <el-button type="danger" :icon="Delete" circle @click="clickDelete(task.id)"/>
       </div>
     </div>
   </div>
@@ -33,8 +48,8 @@
 
 <script setup lang="ts">
 
-import {ref} from "vue";
-import {taskLog, taskRun, userTasks} from "@/request/task";
+import {reactive, ref} from "vue";
+import {taskDelete, taskEdit, taskLog, taskRun, userTasks} from "@/request/task";
 import {CaretRight, Delete, Edit, More} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 
@@ -81,6 +96,40 @@ const clickLog = (id: any) => {
       confirmButtonText: '关闭',
       dangerouslyUseHTMLString: true,
     })
+  })
+}
+const clickDelete = (id: any) => {
+  taskDelete(id).then((resp) => {
+    ElMessageBox.alert(resp.data.data, '删除成功', {
+      confirmButtonText: '关闭',
+      dangerouslyUseHTMLString: true,
+    })
+  })
+}
+
+const editId = ref(0)
+const editShow = ref(false)
+const form = reactive({
+  cookie: '',
+})
+
+const clickEdit = (id: any) => {
+  editId.value = id
+  editShow.value = true
+}
+const clickEditSubmit = (id: any) => {
+  taskEdit({
+    "id": id,
+    "cookie": form.cookie,
+  }).then((resp) => {
+    if (resp.data.status == 0) {
+      editId.value = 0
+      editShow.value = false
+      ElMessage({
+        showClose: true,
+        message: '保存成功',
+      })
+    }
   })
 }
 </script>

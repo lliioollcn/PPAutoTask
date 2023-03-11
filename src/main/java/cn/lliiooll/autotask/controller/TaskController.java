@@ -1,6 +1,8 @@
 package cn.lliiooll.autotask.controller;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import cn.lliiooll.autotask.data.web.AjaxCodes;
 import cn.lliiooll.autotask.data.web.AjaxResult;
 import cn.lliiooll.autotask.service.TaskService;
@@ -48,13 +50,19 @@ public class TaskController {
     @GetMapping("/delete")
     public AjaxResult delete(int id) {
         // 删除任务，判断这个任务是不是这个账号的
-        return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(null).build();
+        return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(taskService.delete(id, request)).build();
     }
 
     @PostMapping("/edit")
     public AjaxResult edit(@RequestBody String data) {
         // 更新Cookie
-        return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(null).build();
+        if (StrUtil.isNotBlank(data) && JSONUtil.isTypeJSON(data)) {
+            JSONObject json = JSONUtil.parseObj(data);
+            int id = json.getInt("id");
+            String cookie = json.getStr("cookie");
+            return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("保存成功").data(taskService.edit(request,id,cookie)).build();
+        }
+        return AjaxResult.builder().status(AjaxCodes.FAILED).msg("数据不能为空").data(null).build();
     }
 
     @GetMapping("/details")

@@ -38,3 +38,21 @@ export function taskLog(id: any) {
         }
     });
 }
+
+export function taskDelete(id: any) {
+    return request({
+        url: "/task/delete",
+        method: "get",
+        params: {
+            "id": id,
+        }
+    });
+}
+
+export function taskEdit(param: any) {
+    return request({
+        url: "/task/edit",
+        method: "post",
+        data: param
+    });
+}

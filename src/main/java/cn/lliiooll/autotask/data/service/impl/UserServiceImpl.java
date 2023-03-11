@@ -96,7 +96,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUserTaskById(String mid) {
-        mapper.deleteUserTaskById(mid);
+    public void deleteUserTaskByMid(String mid) {
+        mapper.deleteUserTaskByMid(mid);
     }
+
+    @Override
+    public void deleteUserTaskById(int id) {
+        mapper.deleteUserTaskById(id);
+    }
+
 }
