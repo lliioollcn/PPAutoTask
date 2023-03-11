@@ -4,8 +4,10 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.lliiooll.autotask.utils.RedisUtil;
+import jakarta.annotation.PostConstruct;
 import jakarta.mail.internet.MimeMessage;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 
+@Slf4j
 @Service
 public class MailService {
 
@@ -37,6 +40,7 @@ public class MailService {
         this.redisUtil = redisUtil;
     }
 
+
     @SneakyThrows
     public void sendVerifyMail(String mail) {
         String path = RandomUtil.randomString(20);
@@ -47,7 +51,7 @@ public class MailService {
         helper.setTo(mail);
         helper.setFrom(from);
         helper.setSubject("AutoTask - 邮箱验证");
-        String verifyUrl = url + "/auth/verify/" + path;
+        String verifyUrl = url + "auth/verify/" + path;
         if (html) {
             helper.setText(FileUtil.readString(htmlPath, StandardCharsets.UTF_8).replace("{url}", verifyUrl), true);
         } else {

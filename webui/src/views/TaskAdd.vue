@@ -3,7 +3,7 @@
   <div v-for="task in tasks" style="padding-left: 20px;padding-right: 20px;padding-top: 10px;">
     <el-dialog v-model="editShow" title="添加任务">
       <el-form :model="form">
-        <el-form-item label="Token">
+        <el-form-item label="Token(从皮皮搞笑内的模块设置复制)">
           <el-input v-model="form.cookie" autocomplete="off"/>
         </el-form-item>
       </el-form>
