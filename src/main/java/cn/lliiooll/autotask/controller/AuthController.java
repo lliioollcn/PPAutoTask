@@ -11,6 +11,7 @@ import cn.lliiooll.autotask.service.AuthService;
 import cn.lliiooll.autotask.utils.NetUtils;
 import cn.lliiooll.autotask.utils.Utils;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -78,7 +79,7 @@ public class AuthController {
     }
 
     @GetMapping("/verify/{code}")
-    public AjaxResult verify(String code) {
+    public AjaxResult verify(@PathVariable("code") String code) {
         if (authService.verify(code)) {
             return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("验证完毕，现在你可以登录你的账号了").data(null).build();
         }

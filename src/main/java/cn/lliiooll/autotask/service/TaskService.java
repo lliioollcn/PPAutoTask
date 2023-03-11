@@ -10,13 +10,16 @@ import cn.lliiooll.autotask.data.service.UserService;
 import cn.lliiooll.autotask.service.task.BaseTaskService;
 import cn.lliiooll.autotask.service.task.PPService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Service
 public class TaskService {
 
@@ -147,9 +150,20 @@ public class TaskService {
                     .lastTime(0)
                     .account("未知")
                     .mid(mid)
-                            .createTime(System.currentTimeMillis())
+                    .createTime(System.currentTimeMillis())
                     .build());
         }
         return "";
+    }
+
+    @Scheduled(cron = "0 0 0/8 1/1 * ?")
+    public void startAllTask() {
+        userService.selectAllUserTask().forEach(task -> {
+            BaseTaskService taskService = taskServices.get(task.getTaskType());
+            if (taskService != null) {
+                log.info("开始运行任务");
+                ThreadUtil.execute(() -> taskService.doTask(userService, task, userService.selectUserDataByMid(task.getMid())));
+            }
+        });
     }
 }

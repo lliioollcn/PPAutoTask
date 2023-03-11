@@ -82,6 +82,7 @@ public class AuthService {
                         .isAdmin(0)
                         .isBanned(0)
                         .reason("")
+                        .createTime(System.currentTimeMillis())
                         .userName(bean.getEmail())
                         .build());
                 mailService.sendVerifyMail(bean.getEmail());
@@ -148,7 +149,9 @@ public class AuthService {
     }
 
     public boolean verify(String code) {
+        log.info("准备验证code: {}",code);
         Object ins = redisUtil.get("mail_" + code);
+        log.info("code: {}",ins);
         if (ins == null) {
             return false;
         }

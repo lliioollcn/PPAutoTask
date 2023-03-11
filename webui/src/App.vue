@@ -131,7 +131,7 @@ const tryAuthStatus = () => {
       isRegister.value = false
       isAuth.value = true
       if (resp.data.data == 0) {
-        ElMessageBox.alert("请在您的邮箱寻找验证邮件并进行验证后继续。如果你没有收到邮件，请查看垃圾箱。<br\> 如果你没有验证邮箱，你将不能添加任何任务", "提示", {
+        ElMessageBox.alert("请在您的邮箱寻找验证邮件并进行验证后继续。如果你没有收到邮件，请查看垃圾箱。 如果你没有验证邮箱，你将不能添加任何任务", "提示", {
           confirmButtonText: "确定"
         })
       }
@@ -209,6 +209,18 @@ const vaptchaSuccess = (token: string, server: string) => {
         localStorage.setItem("at_token", resp.data.data.at_token)
         location.reload()
       }
+    }).catch((error) => {
+      openVerify.value = false
+      if (error.response) {
+        // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      ElMessageBox.alert("服务器错误", "错误", {
+        confirmButtonText: "确定"
+      })
+      loading.close()
     })
   } else {
     authRegister({
@@ -229,6 +241,18 @@ const vaptchaSuccess = (token: string, server: string) => {
           location.reload()
         })
       }
+    }).catch((error) => {
+      openVerify.value = false
+      if (error.response) {
+        // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
+      ElMessageBox.alert("服务器错误", "错误", {
+        confirmButtonText: "确定"
+      })
+      loading.close()
     })
   }
 }
