@@ -21,7 +21,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+        //response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Origin", "https://pp.lliiooll.cn");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE");
         response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
@@ -29,7 +30,10 @@ public class AuthInterceptor implements HandlerInterceptor {
         response.setCharacterEncoding("utf-8");
         if (request.getMethod().equalsIgnoreCase("GET") || request.getMethod().equalsIgnoreCase("POST")) {
             String token = request.getHeader("Token");
-            if (request.getRequestURI().startsWith("/auth") || request.getRequestURI().startsWith("/error")) {
+            if (request.getRequestURI().startsWith("/auth")
+                    || request.getRequestURI().startsWith("/error")
+                    || request.getRequestURI().startsWith("/open")
+            ) {
                 return true;
             }
             if (StrUtil.isNotBlank(token)) {
