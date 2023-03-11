@@ -4,5 +4,5 @@ import java.io.FileWriter;
 
 public abstract class PPTaskBase {
 
-    public abstract boolean doTask(String token, FileWriter writer);
+    public abstract boolean doTask(String token, FileWriter writer) throws Throwable;
 }

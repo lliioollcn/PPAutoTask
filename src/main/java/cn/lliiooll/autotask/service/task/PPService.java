@@ -11,6 +11,7 @@ import cn.lliiooll.autotask.service.TaskService;
 import cn.lliiooll.autotask.service.task.pp.PPTaskBase;
 import jakarta.annotation.PostConstruct;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import java.io.FileWriter;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+@Slf4j
 @Service
 public class PPService extends BaseTaskService {
 
@@ -35,27 +37,35 @@ public class PPService extends BaseTaskService {
         taskService.register(this, 0, "皮皮搞笑");
     }
 
-    @SneakyThrows
     @Override
     public void doTask(UserService service, UserTask task, UserData data) {
-        String cookie = task.getCookie();
-        JSONObject json = JSONUtil.parseObj(cookie);
-        task.setAccount(json.getStr("nickname"));
-        task.setTaskStatus(1);
-        service.updateUserTask(task);
-        FileWriter fileWriter = taskLogService.createLog(task.getId());
-        fileWriter.write("开始运行皮皮搞笑任务\n");
-        fileWriter.flush();
-        for (PPTaskBase pTask : tasks) {
-            pTask.doTask(cookie, fileWriter);
+        try {
+            String cookie = task.getCookie();
+            JSONObject json = JSONUtil.parseObj(cookie);
+            task.setAccount(json.getStr("nickname"));
+            task.setTaskStatus(1);
+            service.updateUserTask(task);
+            FileWriter fileWriter = taskLogService.createLog(task.getId());
+            fileWriter.write("开始运行皮皮搞笑任务\n");
+            log.info("开始运行皮皮搞笑任务\n");
             fileWriter.flush();
+            for (PPTaskBase pTask : tasks) {
+                pTask.doTask(cookie, fileWriter);
+                fileWriter.flush();
+            }
+            fileWriter.write("皮皮搞笑任务结束\n");
+            log.info("皮皮搞笑任务结束\n");
+            fileWriter.flush();
+            fileWriter.close();
+            task.setLastTime(System.currentTimeMillis());
+            task.setTaskStatus(0);
+            service.updateUserTask(task);
+        } catch (Throwable e) {
+            task.setTaskStatus(-1);
+            service.updateUserTask(task);
+            e.printStackTrace();
         }
-        fileWriter.write("皮皮搞笑任务结束\n");
-        fileWriter.flush();
-        fileWriter.close();
-        task.setLastTime(System.currentTimeMillis());
-        task.setTaskStatus(0);
-        service.updateUserTask(task);
+
     }
 
     private final Set<PPTaskBase> tasks = new CopyOnWriteArraySet<>();
