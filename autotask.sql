@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `sys_task` (
   `taskType` int(1) NOT NULL AUTO_INCREMENT,
   `taskName` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`taskType`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- 数据导出被取消选择。
 
@@ -45,8 +45,9 @@ CREATE TABLE IF NOT EXISTS `user_task` (
   `lastTime` bigint(20) NOT NULL DEFAULT '0',
   `createTime` bigint(20) NOT NULL DEFAULT '0',
   `cookie` text COLLATE utf8_unicode_ci NOT NULL,
+  `account` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户任务列表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户任务列表';
 
 -- 数据导出被取消选择。
 
