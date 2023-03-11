@@ -41,22 +41,42 @@ public class MailService {
     }
 
 
-    @SneakyThrows
     public void sendVerifyMail(String mail) {
-        String path = RandomUtil.randomString(20);
-        redisUtil.set("mail_" + path, mail, 3600);
-        MimeMessage message = sender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
-        helper.setCc(mail);
-        helper.setTo(mail);
-        helper.setFrom(from);
-        helper.setSubject("AutoTask - 邮箱验证");
-        String verifyUrl = url + "auth/verify/" + path;
-        if (html) {
-            helper.setText(FileUtil.readString(htmlPath, StandardCharsets.UTF_8).replace("{url}", verifyUrl), true);
-        } else {
-            helper.setText(text.replace("{url}", verifyUrl));
+        try {
+            String path = RandomUtil.randomString(20);
+            redisUtil.set("mail_" + path, mail, 3600);
+            MimeMessage message = sender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message);
+            helper.setCc(mail);
+            helper.setTo(mail);
+            helper.setFrom(from);
+            helper.setSubject("AutoTask - 邮箱验证");
+            String verifyUrl = url + "auth/verify/" + path;
+            if (html) {
+                helper.setText(FileUtil.readString(htmlPath, StandardCharsets.UTF_8).replace("{url}", verifyUrl), true);
+            } else {
+                helper.setText(text.replace("{url}", verifyUrl));
+            }
+            sender.send(message);
+        } catch (Throwable e) {
+            log.error("邮件发送失败");
         }
-        sender.send(message);
+    }
+
+
+    public void sendFailedMail(String mail) {
+        try {
+            MimeMessage message = sender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message);
+            helper.setCc(mail);
+            helper.setTo(mail);
+            helper.setFrom(from);
+            helper.setSubject("AutoTask - 任务失败");
+            helper.setText("你在 " + url + " 上的任务多次失败，请登录并更新您的token后再试");
+            sender.send(message);
+        } catch (Throwable e) {
+            log.error("邮件发送失败");
+        }
+
     }
 }

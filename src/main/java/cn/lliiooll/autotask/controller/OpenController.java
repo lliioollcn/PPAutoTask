@@ -1,13 +1,16 @@
 package cn.lliiooll.autotask.controller;
 
 import cn.hutool.core.util.StrUtil;
+import cn.lliiooll.autotask.data.bean.OpenUserTaskBean;
 import cn.lliiooll.autotask.data.pojo.UserData;
 import cn.lliiooll.autotask.data.pojo.UserTask;
+import cn.lliiooll.autotask.data.service.SysService;
 import cn.lliiooll.autotask.data.service.UserService;
 import cn.lliiooll.autotask.data.web.AjaxCodes;
 import cn.lliiooll.autotask.data.web.AjaxResult;
 import cn.lliiooll.autotask.service.AuthService;
 import cn.lliiooll.autotask.service.SafeService;
+import cn.lliiooll.autotask.service.TaskLogService;
 import cn.lliiooll.autotask.utils.NetUtils;
 import cn.lliiooll.autotask.utils.RedisUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,12 +29,16 @@ public class OpenController {
     private SafeService safeService;
     private HttpServletRequest request;
     private UserService userService;
+    private SysService sysService;
+    private TaskLogService logService;
 
     @Autowired
-    public OpenController(SafeService safeService, HttpServletRequest request, UserService userService) {
+    public OpenController(TaskLogService logService, SysService sysService, SafeService safeService, HttpServletRequest request, UserService userService) {
         this.safeService = safeService;
         this.request = request;
         this.userService = userService;
+        this.logService = logService;
+        this.sysService = sysService;
     }
 
     @GetMapping("/tasks")
@@ -41,10 +49,20 @@ public class OpenController {
             UserData data = userService.selectUserDataByEmail(email);
             if (data != null) {
                 List<UserTask> tasks = userService.selectUserTaskByMid(data.getMid());
-                for (UserTask task : tasks){
-                    task.setCookie("");
+                List<OpenUserTaskBean> datas = new ArrayList<>();
+                for (UserTask task : tasks) {
+                    datas.add(OpenUserTaskBean.builder()
+                            .account(task.getAccount())
+                            .id(task.getId())
+                            .taskType(task.getTaskType())
+                            .taskStatus(task.getTaskStatus())
+                            .mid(task.getMid())
+                            .taskName(sysService.selectTaskByTaskType(task.getTaskType()).getTaskName())
+                            .lastTime(task.getLastTime())
+                            .log(logService.readLog(task.getId()))
+                            .build());
                 }
-                return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(tasks.toArray()).build();
+                return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(datas.toArray()).build();
             }
         }
         return AjaxResult.builder().status(AjaxCodes.FAILED).msg("请求参数错误").data(null).build();

@@ -63,6 +63,10 @@ public class PPService extends BaseTaskService {
         } catch (Throwable e) {
             task.setTaskStatus(-1);
             service.updateUserTask(task);
+            if (System.currentTimeMillis() - task.getLastTime() > 1000 * 60 * 60 * 24) {
+                taskService.notifyFailed(task);
+            }
+            task.setLastTime(Long.MAX_VALUE);
             e.printStackTrace();
         }
 

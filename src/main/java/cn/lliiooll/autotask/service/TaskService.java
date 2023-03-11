@@ -4,6 +4,7 @@ import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.lliiooll.autotask.data.bean.UserTaskBean;
 import cn.lliiooll.autotask.data.pojo.SysTask;
+import cn.lliiooll.autotask.data.pojo.UserData;
 import cn.lliiooll.autotask.data.pojo.UserTask;
 import cn.lliiooll.autotask.data.service.SysService;
 import cn.lliiooll.autotask.data.service.UserService;
@@ -27,15 +28,17 @@ public class TaskService {
     private UserService userService;
     private AuthService authService;
     private TaskLogService taskLogService;
+    private MailService mailService;
 
     private final Map<Integer, BaseTaskService> taskServices = new ConcurrentHashMap<>();
 
     @Autowired
-    public TaskService(SysService sysService, UserService userService, AuthService authService, TaskLogService taskLogService) {
+    public TaskService(MailService mailService, SysService sysService, UserService userService, AuthService authService, TaskLogService taskLogService) {
         this.sysService = sysService;
         this.userService = userService;
         this.authService = authService;
         this.taskLogService = taskLogService;
+        this.mailService = mailService;
     }
 
 
@@ -165,5 +168,11 @@ public class TaskService {
                 ThreadUtil.execute(() -> taskService.doTask(userService, task, userService.selectUserDataByMid(task.getMid())));
             }
         });
+    }
+
+    public void notifyFailed(UserTask task) {
+        UserData data = userService.selectUserDataByMid(task.getMid());
+        if (data.getEmailAuthed() == 1)
+            mailService.sendFailedMail(data.getEmail());
     }
 }
