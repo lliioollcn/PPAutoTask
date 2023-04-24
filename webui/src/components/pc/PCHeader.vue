@@ -73,7 +73,7 @@ const editableTabsValue = ref("/")
 let tabs = new Array<TabMenuData>()
 tabs.push({
   name: "主页",
-  path: "/",
+  path: "/pc",
   closable: false
 })
 const editableTabs = ref(tabs)
@@ -98,7 +98,7 @@ watch(() => route.path, () => {
 })
 
 const removeTab = (targetName: string) => {
-  if (targetName !== "/") {
+  if (targetName !== "/pc") {
     const tabs = editableTabs.value
     let activeName = editableTabsValue.value
     if (activeName === targetName) {

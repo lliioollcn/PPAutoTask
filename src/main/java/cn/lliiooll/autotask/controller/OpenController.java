@@ -44,9 +44,12 @@ public class OpenController {
 
     @GetMapping("/tasks")
     public AjaxResult tasks(String email) {
+        /*
         if (safeService.limit(request, email))
             return AjaxResult.builder().status(AjaxCodes.FAILED).msg("请求速率过快，请稍后再试").data(null).build();
+        */
         if (StrUtil.isNotBlank(email)) {
+
             UserData data = userService.selectUserDataByEmail(email);
             if (data != null) {
                 List<UserTask> tasks = userService.selectUserTaskByMid(data.getMid());
@@ -71,9 +74,12 @@ public class OpenController {
 
     @GetMapping("/total")
     public AjaxResult total() {
+        /*
         if (safeService.limit(request))
             return AjaxResult.builder().status(AjaxCodes.FAILED).msg("请求速率过快，请稍后再试").data(null).build();
 
+
+         */
         return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("查询成功").data(new HashMap<String, Object>() {{
             put("task", userService.selectUserTaskTotal());
             put("user", userService.selectUserDataTotal());
@@ -82,9 +88,12 @@ public class OpenController {
 
     @GetMapping("/view")
     public AjaxResult view(int page) {
+        /*
         if (safeService.limit(request))
             return AjaxResult.builder().status(AjaxCodes.FAILED).msg("请求速率过快，请稍后再试").data(null).build();
+         */
         List<UserTask> userTasks = userService.selectAllUserTask(12, page * 12);
+
         List<OpenTaskViewBean> datas = new ArrayList<>();
         for (UserTask task : userTasks) {
             UserData data = userService.selectUserDataByMid(task.getMid());

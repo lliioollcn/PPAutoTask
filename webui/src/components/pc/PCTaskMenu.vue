@@ -10,11 +10,9 @@
       @select="handleSelect"
       :router="true"
   >
-    <el-menu-item index="/">
+    <el-menu-item index="/pc">
       <el-icon>
-        <el-icon>
-          <House/>
-        </el-icon>
+        <House/>
       </el-icon>
       <template #title>主页</template>
     </el-menu-item>
@@ -30,19 +28,16 @@
       </el-menu-item-group>
     </el-sub-menu>
 
-    <el-menu-item index="/task/create">
+    <el-menu-item index="/pc/task/create">
       <el-icon>
-        <el-icon>
-          <CirclePlus/>
-        </el-icon>
+        <CirclePlus/>
       </el-icon>
+
       <template #title>添加任务</template>
     </el-menu-item>
-    <el-menu-item index="/task/list">
+    <el-menu-item index="/pc/task/list">
       <el-icon>
-        <el-icon>
-          <Memo/>
-        </el-icon>
+        <Memo/>
       </el-icon>
       <template #title>任务列表</template>
     </el-menu-item>
@@ -62,6 +57,7 @@ import {
   ArrowRight
 } from '@element-plus/icons-vue'
 import {useRoute} from "vue-router";
+import router from "@/router";
 
 const isCollapse = ref(false)
 const collapseButtonIcon = ref(ArrowRight)
@@ -82,8 +78,11 @@ const collapseMenu = () => {
 
 const route = useRoute()
 
-const pathNow = ref("/")
+const pathNow = ref("/pc")
 
+if (route.path == "/") {
+  router.push("/pc")
+}
 
 watch(() => route.path, () => {
   pathNow.value = route.path

@@ -21,14 +21,12 @@ public class SafeService {
         Object ipLo = redis.get(ip);
         Object emLo = redis.get(email);
         if (ipLo == null || emLo == null) {
-            redis.set(ip, "1", 60 * 10);
-            redis.set(email, "1", 60 * 10);
+            redis.set(ip, 1, 60 * 10);
+            redis.set(email, 1, 60 * 10);
             return false;
         }
-        String ipL = (String) ipLo;
-        String emL = (String) emLo;
-        int ipC = Integer.parseInt(ipL);
-        int emC = Integer.parseInt(emL);
+        int ipC = (int) ipLo;
+        int emC = (int) emLo;
         if (ipC > 300 || emC > 300) {
             redis.set(ip, ipC, 60 * 10);
             redis.set(email, emC, 60 * 10);
