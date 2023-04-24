@@ -65,6 +65,21 @@ public class TaskController {
             JSONObject json = JSONUtil.parseObj(data);
             int id = json.getInt("id");
             String cookie = json.getStr("cookie");
+            if (!JSONUtil.isTypeJSON(cookie))
+                return AjaxResult.builder().status(AjaxCodes.FAILED).msg("无效的token格式，token应为json格式，包含h_av、token等字段").data(null).build();
+            JSONObject jsonObject = JSONUtil.parseObj(cookie);
+            if (!jsonObject.containsKey("h_av")
+                    || !jsonObject.containsKey("h_pipi")
+                    || !jsonObject.containsKey("h_os")
+                    || !jsonObject.containsKey("h_dt")
+                    || !jsonObject.containsKey("h_app")
+                    || !jsonObject.containsKey("h_model")
+                    || !jsonObject.containsKey("h_did")
+                    || !jsonObject.containsKey("token")
+                    || !jsonObject.containsKey("android_id")
+            )
+                return AjaxResult.builder().status(AjaxCodes.FAILED).msg("无效的token格式，token应为json格式，包含userstatus、nickname等字段").data(null).build();
+
             if (StrUtil.isNotBlank(cookie))
                 return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("保存成功").data(taskService.edit(request, id, cookie)).build();
         }
@@ -78,6 +93,20 @@ public class TaskController {
             JSONObject json = JSONUtil.parseObj(data);
             int taskType = json.getInt("id");
             String cookie = json.getStr("cookie");
+            if (!JSONUtil.isTypeJSON(cookie))
+                return AjaxResult.builder().status(AjaxCodes.FAILED).msg("无效的token格式，token应为json格式，包含h_av、token等字段").data(null).build();
+            JSONObject jsonObject = JSONUtil.parseObj(cookie);
+            if (!jsonObject.containsKey("h_av")
+                    || !jsonObject.containsKey("h_pipi")
+                    || !jsonObject.containsKey("h_os")
+                    || !jsonObject.containsKey("h_dt")
+                    || !jsonObject.containsKey("h_app")
+                    || !jsonObject.containsKey("h_model")
+                    || !jsonObject.containsKey("h_did")
+                    || !jsonObject.containsKey("token")
+                    || !jsonObject.containsKey("android_id")
+            )
+                return AjaxResult.builder().status(AjaxCodes.FAILED).msg("无效的token格式，token应为json格式，包含userstatus、nickname等字段").data(null).build();
             if (StrUtil.isNotBlank(cookie))
                 return AjaxResult.builder().status(AjaxCodes.SUCCESS).msg("添加成功").data(taskService.add(request, taskType, cookie)).build();
         }

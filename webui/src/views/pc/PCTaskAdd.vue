@@ -95,7 +95,7 @@ const clickAddSubmit = (id: any) => {
         editShow.value = false
         ElMessage({
           showClose: true,
-          message: resp.data.data,
+          message: resp.data.msg,
         })
       }
     })
