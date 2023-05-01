@@ -28,14 +28,23 @@ public class TaskZuiyouLite {
     }
 
     public ZyCommonData<ZyGetBubblesData> getBubbles() throws Throwable {
+        if (this.token != null) {
+            token.set("h_ts", System.currentTimeMillis());
+        }
         return dataOrNull(ZyApis.GET_BUBBLES, ZyGetBubblesData.class, token);
     }
 
     public ZyCommonData<ZyCheckInData> checkIn() throws Throwable {
+        if (this.token != null) {
+            token.set("h_ts", System.currentTimeMillis());
+        }
         return dataOrNull(ZyApis.CHECK_IN, ZyCheckInData.class, token);
     }
 
     public ZyCommonData<ZyOpenBoxV2Data> openBoxV2(ZyGetPackData.ZyGetPackDataItem item) throws Throwable {
+        if (this.token != null) {
+            token.set("h_ts", System.currentTimeMillis());
+        }
         JSONObject body = JSONUtil.createObj();
         body.putAll(token);
         JSONObject extra = JSONUtil.parseObj(item.getExtra());
@@ -47,6 +56,9 @@ public class TaskZuiyouLite {
 
 
     public ZyCommonData<ZyGetRewardData> getBubbleReward(ZyGetBubblesData.ZyGetBubblesDataItem item) throws Throwable {
+        if (this.token != null) {
+            token.set("h_ts", System.currentTimeMillis());
+        }
         JSONObject body = JSONUtil.createObj();
         body.putAll(token);
         body.putAll(JSONUtil.parseObj(item));
@@ -54,6 +66,9 @@ public class TaskZuiyouLite {
     }
 
     public ZyCommonData<ZyGetPackData> getPackItems(int offset) throws Throwable {
+        if (this.token != null) {
+            token.set("h_ts", System.currentTimeMillis());
+        }
         JSONObject body = JSONUtil.createObj();
         body.putAll(token);
         body.set("pack_tab", 1);
@@ -63,10 +78,16 @@ public class TaskZuiyouLite {
     }
 
     public ZyCommonData<ZyGetPackData> getPackItems() throws Throwable {
+        if (this.token != null) {
+            token.set("h_ts", System.currentTimeMillis());
+        }
         return getPackItems(0);
     }
 
     public List<ZyGetPackData> getAllPackItems() throws Throwable {
+        if (this.token != null) {
+            token.set("h_ts", System.currentTimeMillis());
+        }
         List<ZyGetPackData> datas = new ArrayList<>();
         int offset = 0;
         while (true) {
@@ -87,7 +108,9 @@ public class TaskZuiyouLite {
     }
 
     private <T> ZyCommonData<T> dataOrNull(String url, Class<T> type, JSONObject body) throws Throwable {
-
+        if (this.token != null) {
+            token.set("h_ts", System.currentTimeMillis());
+        }
         // log.info("body: {}", body.toStringPretty());
         String jstr = HttpUtil.createPost(ZyApis.API_HOST + url).body(body.toString()).contentType("application/json").execute().body();
         //log.info("result: {}", JSONUtil.formatJsonStr(jstr));
