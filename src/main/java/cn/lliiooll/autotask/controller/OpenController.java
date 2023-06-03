@@ -115,7 +115,18 @@ public class OpenController {
     }
 
     private String replace(String name) {
-        return (name.length() / 2 < 1 ? "" : append(name.length() / 2)) + name.substring(Math.max(name.length() / 2, 1));
+        StringBuilder sb = new StringBuilder();
+        if (name.contains("@")) {
+            String[] emailS = name.split("@");
+            for (int i = 0; i < emailS[0].length(); i++) {
+                sb.append("*");
+            }
+            sb.append("@").append(emailS[1]);
+        } else {
+            sb.append(name.length() / 2 < 1 ? "" : append(name.length() / 2))
+                    .append(name.substring(Math.max(name.length() / 2, 1)));
+        }
+        return sb.toString();
     }
 
     private String append(int i) {

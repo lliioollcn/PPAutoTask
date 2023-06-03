@@ -1,39 +1,42 @@
 <template>
   <el-empty style="height: 100%;width: 100%" v-if="isEmpty" description="还没有任务哦，耐心等管理员添加吧~"/>
-  <div v-for="task in tasks" style="padding-left: 20px;padding-right: 20px;padding-top: 10px;">
-    <el-dialog v-model="editShow" title="添加任务">
-      <el-form :model="form">
-        <p>Token(从皮皮搞笑内的模块设置复制)</p>
-        <el-form-item>
-          <el-input v-model="form.cookie" autocomplete="off"/>
-        </el-form-item>
-      </el-form>
-      <template #footer>
+    <div style="width: 100%;height: 100%;display: block;">
+        <div v-for="task in tasks" style="padding-left: 20px;padding-right: 20px;padding-top: 10px;">
+            <el-dialog v-model="editShow" title="添加任务">
+                <el-form :model="form">
+                    <p>Token(从皮皮搞笑内的模块设置复制)</p>
+                    <el-form-item>
+                        <el-input v-model="form.cookie" autocomplete="off"/>
+                    </el-form-item>
+                </el-form>
+                <template #footer>
       <span class="dialog-footer">
         <el-button @click="editShow = false">取消</el-button>
         <el-button type="primary" @click="clickAddSubmit(editId)">
           添加
         </el-button>
       </span>
-      </template>
-    </el-dialog>
-    <div class="task-box" :style="{
+                </template>
+            </el-dialog>
+            <div class="task-box" :style="{
           boxShadow: `var(--el-box-shadow)`,
           borderRadius: `var(--el-border-radius-round)`,
         }">
-      <div class="task-box-content">
-        <el-descriptions
-            :border="true"
-            :column="1">
-          <el-descriptions-item label="任务名称:">{{ task.taskName }}</el-descriptions-item>
+                <div class="task-box-content">
+                    <el-descriptions
+                            :border="true"
+                            :column="1">
+                        <el-descriptions-item label="任务名称:">{{ task.taskName }}</el-descriptions-item>
 
-        </el-descriptions>
-      </div>
-      <div class="task-box-btn">
-        <el-button type="success" :icon="Plus" circle @click="clickAdd(task.taskType)"/>
-      </div>
+                    </el-descriptions>
+                </div>
+                <div class="task-box-btn">
+                    <el-button type="success" :icon="Plus" circle @click="clickAdd(task.taskType)"/>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+
 </template>
 
 <script setup lang="ts">
@@ -105,13 +108,7 @@ const clickAddSubmit = (id: any) => {
 }
 </script>
 
-<style>
-.el-scrollbar__view {
-  height: 100%;
-  width: 100%;
-  display: flex;
-}
-
+<style scoped>
 .task-box {
   width: 300px;
   display: block;
