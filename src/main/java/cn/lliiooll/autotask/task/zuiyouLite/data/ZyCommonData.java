@@ -14,6 +14,7 @@ public class ZyCommonData<T> {
 
     private T data;
     private int ret;// -1是失败,1是成功
+    private int errcode;// -1是失败,1是成功
     private String msg;
 
     @Override

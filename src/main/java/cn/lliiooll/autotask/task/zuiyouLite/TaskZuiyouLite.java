@@ -41,6 +41,17 @@ public class TaskZuiyouLite {
         return dataOrNull(ZyApis.CHECK_IN, ZyCheckInData.class, token);
     }
 
+    public ZyCommonData<ZyEntranceData> entrance() throws Throwable {
+        if (this.token != null) {
+            token.set("h_ts", System.currentTimeMillis());
+        }
+        return dataOrNull(ZyApis.ENTRANCE, ZyEntranceData.class, token);
+    }
+
+    public MercuryZuiyouLite mercury() throws Throwable {
+        return MercuryZuiyouLite.newMercury(token.toString());
+    }
+
     public ZyCommonData<ZyOpenBoxV2Data> openBoxV2(ZyGetPackData.ZyGetPackDataItem item) throws Throwable {
         if (this.token != null) {
             token.set("h_ts", System.currentTimeMillis());
@@ -139,6 +150,8 @@ public class TaskZuiyouLite {
         protected static final String CHECK_IN = "/ppapi/treasure_hunt/check_in";
         // 开刮刮乐
         protected static final String OPEN_BOX_V2 = "/ppapi/treasure_hunt/open_box_v2";
+        // 皮皮车行活动入口
+        protected static final String ENTRANCE = "/ppapi/plutus/growth/entrance";
         // 公益页面
         protected static final String WELFARE_PAGE = "/welfare/api/proxy?url=http://api.in.ippzone.com/welfare/get_welfare_page";
         // 捐爱心

@@ -42,7 +42,7 @@ public class AuthService {
     }
 
     public boolean auth(String token, String ipAddr) {
-        log.info("尝试验证用户,Token: {},IP: {}", token, ipAddr);
+        //log.info("尝试验证用户,Token: {},IP: {}", token, ipAddr);
         String[] tokenType = token.split("\\_");
         if (tokenType.length == 3) {
             String timeStr = tokenType[2];
